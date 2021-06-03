@@ -28,6 +28,12 @@ class GlassesSpider(scrapy.Spider):
                 'image': link_img
             }
 
-        next_page = response.xpath("//ul[@class='pagination']/li[6]/a[@class='page-link']/")
-
+        next_page = response.xpath("//ul[@class='pagination']/li[6]/a[@class='page-link']/@href").get()
+        if next_page:
+            yield scrapy.Request(
+                url=next_page,
+                callback=self.parse,
+                headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36',
+            })
 
