@@ -17,9 +17,17 @@ class GlassesSpider(scrapy.Spider):
         products = response.xpath("//div[@id='product-lists']/div[@class='col-12 pb-5 mb-lg-3 col-lg-4 product-list-row text-center product-list-item']")
         for product in products:
             name = product.xpath(".//div[@class='p-title']/a[1]/text()").get().strip()
+            price = product.xpath(".//div[@class='p-price']/div[1]/span/text()").get()
+            link_product = product.xpath(".//div[@class='product-img-outer']/a[1]/@href").get()
+            link_img = product.xpath(".//div[@class='product-img-outer']/a[1]/img[1]/@data-src").get()
 
             yield {
-                'name': name
+                'link': link_product,
+                'name': name,
+                'price': price,
+                'image': link_img
             }
+
+        next_page = response.xpath("//ul[@class='pagination']/li[6]/a[@class='page-link']/")
 
 
