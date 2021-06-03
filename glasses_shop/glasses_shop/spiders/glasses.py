@@ -14,4 +14,12 @@ class GlassesSpider(scrapy.Spider):
             })
 
     def parse(self, response):
-        pass
+        products = response.xpath("//div[@id='product-lists']/div[@class='col-12 pb-5 mb-lg-3 col-lg-4 product-list-row text-center product-list-item']")
+        for product in products:
+            name = product.xpath(".//div[@class='p-title']/a[1]/text()").get().strip()
+
+            yield {
+                'name': name
+            }
+
+
